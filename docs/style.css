@@ -1,0 +1,159 @@
+:root {
+  --bg: #0f1117;
+  --panel: #181b24;
+  --panel-2: #1f232f;
+  --border: #2b3040;
+  --text: #e6e9f0;
+  --muted: #9aa6bf;
+  --accent: #6366f1;
+  --accent-2: #22d3ee;
+  --warn: #ef4444;
+  --ok: #10b981;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+}
+
+header {
+  padding: 1.4rem 2rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #12151d, var(--bg));
+}
+header h1 { margin: 0; font-size: 1.5rem; letter-spacing: .3px; }
+header .sub { margin: .3rem 0 0; color: var(--muted); font-size: .9rem; }
+
+main {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  grid-template-areas: "inputs results" "inputs plots";
+  gap: 1rem;
+  padding: 1rem 2rem 2rem;
+  align-items: start;
+  max-width: 1400px;
+}
+.inputs { grid-area: inputs; }
+.results { grid-area: results; }
+.plots { grid-area: plots; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem 1.2rem;
+}
+.panel h2 {
+  margin: 0 0 .8rem;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--muted);
+}
+
+.group {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: .7rem .8rem .85rem;
+  margin-bottom: .8rem;
+}
+.group-title {
+  display: block;
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-2);
+  margin-bottom: .5rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: .85rem;
+  color: var(--muted);
+  margin-bottom: .55rem;
+  gap: .25rem;
+}
+label:last-child { margin-bottom: 0; }
+label small { color: #6b7488; font-size: .72rem; }
+
+input, select {
+  background: #0d0f15;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 7px;
+  padding: .42rem .55rem;
+  font-size: .95rem;
+  font-family: inherit;
+}
+input:focus, select:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+
+.radio-row { display: flex; flex-direction: column; gap: .35rem; margin-bottom: .55rem; }
+label.radio { flex-direction: row; align-items: center; gap: .4rem; color: var(--text); margin: 0; }
+label.radio input { width: auto; }
+
+.hidden { display: none !important; }
+
+/* results */
+.headline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #1e2030, #181b24);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .9rem 1.1rem;
+  margin-bottom: 1rem;
+}
+.headline .big { color: var(--muted); font-size: .85rem; text-transform: uppercase; letter-spacing: 1px; }
+.headline .big-value { font-size: 2rem; font-weight: 700; color: var(--accent-2); }
+
+table.kv { width: 100%; border-collapse: collapse; font-size: .9rem; }
+table.kv td { padding: .35rem .2rem; border-bottom: 1px solid var(--border); }
+table.kv td:first-child { color: var(--muted); }
+table.kv td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+
+.warning {
+  margin-top: 1rem;
+  padding: .7rem .9rem;
+  border-radius: 8px;
+  font-size: .88rem;
+  border: 1px solid var(--warn);
+  background: rgba(239, 68, 68, .12);
+  color: #fecaca;
+}
+.warning.ok { border-color: var(--ok); background: rgba(16,185,129,.12); color: #bbf7d0; }
+
+/* plots */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+.chart-box {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: .6rem;
+  height: 240px;
+}
+.chart-box:last-child { grid-column: 1 / -1; height: 260px; }
+
+footer {
+  padding: 1rem 2rem 2rem;
+  color: var(--muted);
+  font-size: .8rem;
+  border-top: 1px solid var(--border);
+}
+footer code { color: var(--accent-2); }
+
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; grid-template-areas: "inputs" "results" "plots"; }
+  .chart-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vienna 0.8 m — Exposure Time Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Exposure Time Calculator</h1>
+    <p class="sub">Vienna 0.8 m telescope &middot; f/8.3 &middot; FLI CCD &middot;
+      constants derived from the 2026-02-18 run</p>
+  </header>
+
+  <main>
+    <!-- ---------------- INPUTS ---------------- -->
+    <section class="panel inputs">
+      <h2>Inputs</h2>
+
+      <div class="group">
+        <span class="group-title">Target</span>
+        <label>Filter
+          <select id="filter"></select>
+        </label>
+        <label>Target magnitude
+          <input id="mag" type="number" value="14" step="0.1" />
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="group-title">Solve for</span>
+        <div class="radio-row">
+          <label class="radio"><input type="radio" name="mode" value="time" checked />
+            Exposure time (from SNR)</label>
+          <label class="radio"><input type="radio" name="mode" value="snr" />
+            SNR (from exposure time)</label>
+        </div>
+        <label id="snr-input">Target SNR
+          <input id="snr" type="number" value="100" step="1" />
+        </label>
+        <label id="time-input" class="hidden">Exposure time [s]
+          <input id="exptime" type="number" value="60" step="1" />
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="group-title">Atmosphere</span>
+        <label>Airmass
+          <input id="airmass" type="number" value="1.2" step="0.05" min="1" />
+        </label>
+        <label>or Altitude [&deg;]
+          <input id="altitude" type="number" placeholder="e.g. 56" step="1" min="1" max="90" />
+        </label>
+        <label>Seeing FWHM [&Prime;]
+          <input id="seeing" type="number" value="2.0" step="0.1" />
+        </label>
+        <label>Sky brightness &times;
+          <input id="skymult" type="number" value="1.0" step="0.1" min="0" />
+          <small>1 = the derived (dark-ish urban) night; raise for moon/bright sky</small>
+        </label>
+      </div>
+
+      <div class="group">
+        <span class="group-title">Camera</span>
+        <label>Binning
+          <select id="binning">
+            <option value="1">1 &times; 1</option>
+            <option value="2" selected>2 &times; 2</option>
+            <option value="3">3 &times; 3</option>
+            <option value="4">4 &times; 4</option>
+          </select>
+        </label>
+        <label>Readout mode
+          <select id="readmode">
+            <option value="8 MHz" selected>8 MHz (fast)</option>
+            <option value="1 MHz">1 MHz (slow)</option>
+          </select>
+        </label>
+        <label>Aperture diameter [&times; FWHM]
+          <input id="aperture" type="number" value="3.0" step="0.5" min="1" />
+        </label>
+      </div>
+    </section>
+
+    <!-- ---------------- RESULTS ---------------- -->
+    <section class="panel results">
+      <h2>Results</h2>
+      <div class="headline">
+        <div class="big" id="headline-label">Exposure time</div>
+        <div class="big-value"><span id="headline-value">—</span></div>
+      </div>
+
+      <table class="kv">
+        <tbody id="result-table"></tbody>
+      </table>
+
+      <div id="sat-warning" class="warning hidden"></div>
+    </section>
+
+    <!-- ---------------- PLOTS ---------------- -->
+    <section class="panel plots">
+      <h2>Diagnostics</h2>
+      <div class="chart-grid">
+        <div class="chart-box"><canvas id="chart-time"></canvas></div>
+        <div class="chart-box"><canvas id="chart-mag"></canvas></div>
+        <div class="chart-box"><canvas id="chart-airmass"></canvas></div>
+        <div class="chart-box"><canvas id="chart-sat"></canvas></div>
+        <div class="chart-box"><canvas id="chart-noise"></canvas></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>SNR&nbsp;=&nbsp;N&#42;/&radic;(N&#42; + n<sub>pix</sub>(N<sub>S</sub> + N<sub>D</sub> + N<sub>R</sub>)).
+       Constants from <code>constants.json</code>. Filters B,V,R,I only
+       (narrowband not yet characterised).</p>
+  </footer>
+
+  <script src="chart.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
