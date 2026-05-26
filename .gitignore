@@ -1,0 +1,23 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Raw observation data (large; not for the repo / GitHub Pages)
+data/
+*.fits
+
+# Reduction intermediates
+reduction/photometry_records.json
+reduction/plots/
+reduction/web_*.png
+
+# Notebook backup
+etc_original_backup.ipynb
+
+# Claude Code local config
+.claude/
+
+# OS
+Thumbs.db
+.DS_Store
