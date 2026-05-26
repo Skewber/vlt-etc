@@ -13,6 +13,12 @@
       "1 MHz": 17.864
     },
     "dark_current_e_per_s_at_-5C": 0.3847,
+    "dark_ref_temp_c": -5.0,
+    "dark_doubling_kelvin": 6.3,
+    "readout_time_s": {
+      "8 MHz": 1.0,
+      "1 MHz": 8.0
+    },
     "saturation_adu": 65535
   },
   "filters": {
@@ -98,6 +104,6 @@
         }
       }
     },
-    "notes": "INTERIM extinction: typical literature coefficients (B0.25/V0.15/R0.10/I0.06); the zero point is re-anchored on M67 so the ETC reproduces the measured throughput at that field. This night's data (3 fields, single airmass each, short baseline; M50 at 24 deg through horizon haze) could not constrain extinction reliably -- re-derive with more fields/airmasses and set USE_TYPICAL_EXTINCTION=False in run_all.py. reference_fits records what the data gave. Narrowband (OIII/Halpha/SII) not characterised (no data). Sky rate is representative of the night. R,I catalog mags via Lupton (2005) SDSS->Cousins transforms."
+    "notes": "INTERIM extinction: typical literature coefficients (B0.25/V0.15/R0.10/I0.06); the zero point is re-anchored on M67 so the ETC reproduces the measured throughput at that field. This night's data (3 fields, single airmass each, short baseline; M50 at 24 deg through horizon haze) could not constrain extinction reliably -- re-derive with more fields/airmasses and set USE_TYPICAL_EXTINCTION=False in run_all.py. reference_fits records what the data gave. Narrowband (OIII/Halpha/SII) not characterised (no data). Sky rate is representative of the night. R,I catalog mags via Lupton (2005) SDSS->Cousins transforms. Dark current vs temperature assumes a 6.3 K doubling around -5.0 C -- refine with multi-temperature darks."
   }
 }

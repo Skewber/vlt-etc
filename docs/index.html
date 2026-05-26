@@ -20,11 +20,67 @@
 
       <div class="group">
         <span class="group-title">Target</span>
-        <label>Filter
+        <label>Filter (observing)
           <select id="filter"></select>
         </label>
-        <label>Target magnitude
+
+        <div class="radio-row">
+          <label class="radio"><input type="radio" name="ttype" value="point" checked />
+            Point source</label>
+          <label class="radio"><input type="radio" name="ttype" value="extended" />
+            Extended source</label>
+        </div>
+
+        <label id="mag-label">Magnitude
           <input id="mag" type="number" value="14" step="0.1" />
+        </label>
+
+        <div id="ext-controls" class="hidden">
+          <label>Light profile
+            <select id="profile">
+              <option value="uniform">Uniform disk</option>
+              <option value="gaussian">Gaussian</option>
+              <option value="sersic">S&eacute;rsic</option>
+            </select>
+          </label>
+          <label id="sersic-n-label" class="hidden">S&eacute;rsic index n
+            <input id="sersicN" type="number" value="4" step="0.5" min="0.5" max="10" />
+            <small>n=1 exponential disk &middot; n=4 de Vaucouleurs</small>
+          </label>
+          <label>Brightness given as
+            <select id="normmode">
+              <option value="mag">Total magnitude</option>
+              <option value="sb">Surface brightness [mag/arcsec&sup2;]</option>
+            </select>
+          </label>
+          <label>Angular size [&Prime;]
+            <input id="size" type="number" value="30" step="1" min="1" />
+            <small id="size-hint">diameter</small>
+          </label>
+          <label>Extraction aperture [&Prime;]
+            <input id="extap" type="number" value="20" step="1" min="0" />
+            <small>circular region (diameter) centred on the source: source flux
+              is integrated inside it, sky &amp; read noise accumulate over its
+              pixels. 0 = SNR at the single peak pixel.</small>
+          </label>
+        </div>
+
+        <label id="sed-label">Source spectrum
+          <select id="sed">
+            <option value="flat">Flat (none)</option>
+            <option value="bb">Blackbody</option>
+            <option value="spec">Spectral type</option>
+          </select>
+        </label>
+        <label id="bb-label" class="hidden">Temperature [K]
+          <input id="bbT" type="number" value="6000" step="100" min="1000" />
+        </label>
+        <label id="spec-label" class="hidden">Spectral type
+          <select id="spectype"></select>
+        </label>
+        <label id="refband-label" class="hidden">Magnitude given in band
+          <select id="refband"></select>
+          <small>converted to the observing filter via approximate colors</small>
         </label>
       </div>
 
@@ -39,9 +95,25 @@
         <label id="snr-input">Target SNR
           <input id="snr" type="number" value="100" step="1" />
         </label>
-        <label id="time-input" class="hidden">Exposure time [s]
+
+        <label>Exposure structure
+          <select id="expmode">
+            <option value="single">Single exposure</option>
+            <option value="nsub_len">Fixed sub-exposure length</option>
+            <option value="split">Fixed number of subs</option>
+          </select>
+        </label>
+        <label id="f-total">Total exposure time [s]
           <input id="exptime" type="number" value="60" step="1" />
         </label>
+        <label id="f-sublen">Sub-exposure length [s]
+          <input id="subexp" type="number" value="60" step="10" min="1" />
+        </label>
+        <label id="f-nsub">Number of subs
+          <input id="nsub" type="number" value="5" step="1" min="1" />
+        </label>
+        <div id="exp-derived" class="derived hidden"></div>
+        <small id="exp-note">Read noise is paid once per sub; saturation is checked per sub.</small>
       </div>
 
       <div class="group">
@@ -57,7 +129,15 @@
         </label>
         <label>Sky brightness &times;
           <input id="skymult" type="number" value="1.0" step="0.1" min="0" />
-          <small>1 = the derived (dark-ish urban) night; raise for moon/bright sky</small>
+          <small>manual factor on top of the moon model below
+            (1 = the derived dark-ish urban night)</small>
+        </label>
+        <label>Moon illumination
+          <input id="moonillum" type="number" value="0" step="0.05" min="0" max="1" />
+          <small>0 = new, 1 = full</small>
+        </label>
+        <label>Moon separation [&deg;]
+          <input id="moonsep" type="number" value="90" step="5" min="0" max="180" />
         </label>
       </div>
 
@@ -77,6 +157,10 @@
             <option value="1 MHz">1 MHz (slow)</option>
           </select>
         </label>
+        <label>Cooler temperature [&deg;C]
+          <input id="cooltemp" type="number" value="-5" step="1" />
+          <small>dark current model (assumed doubling — refine with multi-temp darks)</small>
+        </label>
         <label>Aperture diameter [&times; FWHM]
           <input id="aperture" type="number" value="3.0" step="0.5" min="1" />
         </label>
@@ -85,7 +169,10 @@
 
     <!-- ---------------- RESULTS ---------------- -->
     <section class="panel results">
-      <h2>Results</h2>
+      <div class="results-head">
+        <h2>Results</h2>
+        <button type="button" id="export-btn">Export .txt</button>
+      </div>
       <div class="headline">
         <div class="big" id="headline-label">Exposure time</div>
         <div class="big-value"><span id="headline-value">—</span></div>
@@ -118,6 +205,7 @@
   </footer>
 
   <script src="chart.min.js"></script>
+  <script src="sources.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
