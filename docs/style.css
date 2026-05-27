@@ -30,17 +30,20 @@ header h1 { margin: 0; font-size: 1.5rem; letter-spacing: .3px; }
 header .sub { margin: .3rem 0 0; color: var(--muted); font-size: .9rem; }
 
 main {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  grid-template-areas: "inputs results" "inputs plots";
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   padding: 1rem 2rem 2rem;
-  align-items: start;
   max-width: 1400px;
 }
-.inputs { grid-area: inputs; }
-.results { grid-area: results; }
-.plots { grid-area: plots; }
+
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .8rem;
+}
+.inputs > h2 { grid-column: 1 / -1; margin-bottom: 0; }
+.inputs > .group { margin-bottom: 0; }
 
 .panel {
   background: var(--panel);
@@ -202,7 +205,10 @@ footer {
 }
 footer code { color: var(--accent-2); }
 
-@media (max-width: 900px) {
-  main { grid-template-columns: 1fr; grid-template-areas: "inputs" "results" "plots"; }
+@media (max-width: 1100px) {
+  .inputs { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 700px) {
+  .inputs { grid-template-columns: 1fr; }
   .chart-grid { grid-template-columns: 1fr; }
 }
